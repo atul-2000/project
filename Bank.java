@@ -1,14 +1,15 @@
 import java.util.Scanner;
 import java.util.*;
+import java.io.*;
 
 public class Bank {
 	   
 	public static Scanner sc = new Scanner(System.in);
 	public static Account acc = null;
-
+	
        public static void create_account(){
 		         //Account acc = null;
-                       if(acc == null) {
+                  if(acc == null) {
 				  System.out.print("enter account number: ");
 				  long acno = sc.nextLong();
 				  sc.nextLine();
@@ -65,7 +66,7 @@ public class Bank {
 		System.exit(0);
 	   }
        
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 				
 		Map<Integer, Runnable> commands = new HashMap<>();
 		commands.put(1, () -> create_account());
@@ -76,7 +77,7 @@ public class Bank {
 		
 		while(true)
 		{
-		  System.out.println("a. Create Account");
+		  System.out.println("1. Create Account");
 		  System.out.println("2. Deposit");
 		  System.out.println("3. Withdraw");
 		  System.out.println("4. Details");
@@ -88,12 +89,39 @@ public class Bank {
 
             // Run selected command
             if (commands.containsKey(key))
-                commands.get(key).run();
-		  
-		    if(key==5){
-				break;
+				commands.get(key).run();
+				
+			if(key==5){
+					break;
 			}
+
+			File dir = new File(".");
+		    String loc = dir.getCanonicalPath() + File.separator + "test.csv";
+ 
+		    FileWriter fstream = new FileWriter(loc, true);
+			BufferedWriter out = new BufferedWriter(fstream);
+			
+			StringBuilder sb = new StringBuilder();
+
+			
+			/*sb.append("Account Number");
+			sb.append(',');
+			sb.append("Name");
+			sb.append(',');
+			sb.append("Amount");
+			sb.append('\n');*/
+			  
+			sb.append(acc.acno);
+			sb.append(',');
+			sb.append(acc.name);
+			sb.append(',');
+			sb.append(acc.bal);
+			sb.append('\n');
+			  
+			out.write(sb.toString());
+			out.close();
+			   
 		}//while
 	}
-
 }
+
